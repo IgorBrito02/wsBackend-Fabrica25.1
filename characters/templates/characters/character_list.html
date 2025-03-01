@@ -1,0 +1,55 @@
+{% load django_bootstrap5 %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Personagens</title>
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+</head>
+<body>
+    <div class="container mt-4">
+        <h1>Lista de Personagens</h1>
+        <a href="{% url 'character-create' %}" class="btn btn-success mb-3">Adicionar Novo Personagem</a>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID da API</th>
+                    <th>Nome</th>
+                    <th>Status</th>
+                    <th>Espécie</th>
+                    <th>Tipo</th>
+                    <th>Gênero</th>
+                    <th>Nome de Origem</th>
+                    <th>Nome do Local</th>
+                    <th>Imagem</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for character in characters %}
+                <tr>
+                    <td>{{ character.api_id }}</td>
+                    <td>{{ character.name }}</td>
+                    <td>{{ character.status }}</td>
+                    <td>{{ character.species }}</td>
+                    <td>{{ character.type }}</td>
+                    <td>{{ character.gender }}</td>
+                    <td>{{ character.origin_name }}</td>
+                    <td>{{ character.location_name }}</td>
+                    <td>
+                        <img src="{{ character.image }}" alt="{{ character.name }}" style="max-width: 100px; max-height: 100px;">
+                    </td>
+                    <td>
+                        <a href="{% url 'character-update' character.pk %}" class="btn btn-primary">Editar</a>
+                        <a href="{% url 'character-delete' character.pk %}" class="btn btn-danger">Excluir</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+</body>
+</html>

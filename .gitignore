@@ -1,0 +1,46 @@
+# Arquivos Python
+__pycache__/
+*.pyc
+*.pyd
+*.pyo
+*.egg-info/
+
+# Banco de dados
+*.sqlite3
+
+# Ambientes virtuais
+venv/
+.venv/
+.venv/
+env/
+.env/
+
+# Arquivos de log
+*.log
+
+# Arquivos de configuração específicos do sistema
+.DS_Store
+Thumbs.db
+
+# Arquivos de configuração do VS Code (se aplicável)
+.vscode/
+
+# Arquivos de instalação
+*.dist-info/
+build/
+dist/
+
+# Arquivos temporários
+*.swp
+*.swo
+*~
+# Static files (se você não quiser commitar os arquivos estáticos)
+staticfiles/
+
+# Arquivos de mídia (se você não quiser commitar os arquivos de mídia)
+media/
+
+# Arquivos de Docker, se você não quiser commitar logs e arquivos temporários do Docker
+docker-compose.override.yml
+.dockerenv
+.dockerignore

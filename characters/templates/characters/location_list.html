@@ -1,0 +1,49 @@
+{% load django_bootstrap5 %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Localizações</title>
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+</head>
+<body>
+    <div class="container mt-4">
+        <h1>Lista de Localizações</h1>
+        <a href="{% url 'location-create' %}" class="btn btn-success mb-3">Adicionar Nova Localização</a>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID da API</th>
+                    <th>Nome</th>
+                    <th>Número de Residentes</th>
+                    <th>Residentes</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for location in locations %}
+                <tr>
+                    <td>{{ location.api_id }}</td>
+                    <td>{{ location.name }}</td>
+                    <td>{{ location.residents_count }}</td>
+                    <td>
+                        {% for resident in location.residents %}
+                            {{ resident.name }}{% if not forloop.last %}, {% endif %}
+                        {% empty %}
+                            Nenhum residente
+                        {% endfor %}
+                    </td>
+                    <td>
+                        <a href="{% url 'location-update' location.pk %}" class="btn btn-primary">Editar</a>
+                        <a href="{% url 'location-delete' location.pk %}" class="btn btn-danger">Excluir</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+</body>
+</html>
