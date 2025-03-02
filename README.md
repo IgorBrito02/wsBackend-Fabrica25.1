@@ -130,7 +130,7 @@ Este projeto foi desenvolvido para cumprir os requisitos de um desafio de projet
 
 ## Estrutura do Projeto
 
-RICKANDMORTYAPI/
+wsBackend-Fabrica25.1/
 ├── characters/
 │   ├── pycache/
 │   ├── migrations/
