@@ -6,9 +6,9 @@ Este projeto Django implementa um CRUD completo para personagens e localizaçõe
 
 Este projeto foi desenvolvido para cumprir os requisitos de um desafio de projeto Django, que incluía:
 
--   Implementação de um CRUD completo com duas ou mais entidades relacionadas (personagens e localizações).
--   Consumo de uma API externa gratuita (Rick and Morty API).
--   Utilização de `.gitignore`, `requirements.txt`, `README.md` e `Dockerfile`.
+- Implementação de um CRUD completo com duas ou mais entidades relacionadas (personagens e localizações).
+- Consumo de uma API externa gratuita (Rick and Morty API).
+- Utilização de `.gitignore`, `requirements.txt`, `README.md` e `Dockerfile`.
 
 ## Funcionalidades
 
@@ -23,6 +23,7 @@ Este projeto foi desenvolvido para cumprir os requisitos de um desafio de projet
 
 -   **Interface Web Amigável:** Utiliza Django Templates e Bootstrap para uma experiência de usuário agradável.
 -   **Páginas Informativas:** Contém páginas Home, Sobre e Index, fornecendo informações sobre o projeto e os personagens.
+-   **Busca:** Possibilidade de buscar personagens e locais pelo nome.
 
 ### Implantação
 
@@ -33,15 +34,15 @@ Este projeto foi desenvolvido para cumprir os requisitos de um desafio de projet
 
 -   Python 3.12 ou superior
 -   Pip (gerenciador de pacotes do Python)
--   Docker e Docker Compose (opcional, para execução em container)
--   Postgres
+-   Docker e Docker Compose (recomendado, para execução em container)
+-   PostgreSQL
 
 ## Configuração
 
 1.  **Clone o repositório:**
 
     ```bash
-    git clone https://github.com/IgorBrito02/wsBackend-Fabrica25.1.git
+    git clone [https://github.com/IgorBrito02/wsBackend-Fabrica25.1.git](https://github.com/IgorBrito02/wsBackend-Fabrica25.1.git)
     cd wsBackend-Fabrica25.1
     ```
 
@@ -71,24 +72,29 @@ Este projeto foi desenvolvido para cumprir os requisitos de um desafio de projet
     pip install -r requirements.txt
     ```
 
-5.  **Configure o banco de dados:**
-    * Crie um banco de dados PostgreSQL.
-    * Edite `rickandmortyapi/settings.py` e configure a seção `DATABASES` com suas credenciais.
-    * Execute as migrações:
+5.  **Configure o banco de dados PostgreSQL:**
+
+    -   Crie um banco de dados PostgreSQL.
+    -   Configure as variáveis de ambiente para a conexão com o banco de dados. Você pode usar um arquivo `.env` na raiz do projeto para isso.
+    -   Edite `rickandmortyapi/settings.py` e configure a seção `DATABASES` com suas credenciais, se preferir.
+
+6.  **Execute as migrações:**
 
     ```bash
     python manage.py migrate
     ```
 
-6.  **Execute o servidor de desenvolvimento:**
+    As migrações são responsáveis por criar as tabelas do banco de dados com base nos modelos definidos em `characters/models.py`.
+
+7.  **Execute o servidor de desenvolvimento:**
 
     ```bash
     python manage.py runserver
     ```
 
-    O servidor estará disponível em `http://127.0.0.1:8000/`.
+    O servidor estará disponível em `http://127.0.0.1:8000/`. **Observação:** Este servidor é apenas para desenvolvimento. Não use em produção.
 
-### Usando Docker-Compose (Recomendado)
+### Usando Docker Compose (Recomendado)
 
 1.  **Execute o Docker Compose:**
 
@@ -96,7 +102,40 @@ Este projeto foi desenvolvido para cumprir os requisitos de um desafio de projet
     docker-compose up --build
     ```
 
-    A API estará disponível em `http://localhost:8000/`.
+    A aplicação estará disponível em `http://localhost:8000/`.
+
+## Comandos Úteis com Docker Compose
+
+-   **Executar migrações dentro do container web:**
+
+    ```bash
+    docker-compose exec web python manage.py makemigrations
+    docker-compose exec web python manage.py migrate
+    ```
+
+-   **Reiniciar o container web:**
+
+    ```bash
+    docker-compose restart web
+    ```
+
+-   **Verificar o status dos containers:**
+
+    ```bash
+    docker-compose ps
+    ```
+
+-   **Iniciar o container do banco de dados (se necessário):**
+
+    ```bash
+    docker-compose up -d db
+    ```
+
+-   **Executar o servidor de desenvolvimento dentro do container web:**
+
+    ```bash
+    docker-compose exec web python manage.py runserver 0.0.0.0:8000
+    ```
 
 ## Uso
 
@@ -132,22 +171,28 @@ Este projeto foi desenvolvido para cumprir os requisitos de um desafio de projet
 
 wsBackend-Fabrica25.1/
 ├── characters/
-│   ├── pycache/
+│   ├── __pycache__/
 │   ├── migrations/
 │   ├── templates/characters/
 │   │   ├── about.html
 │   │   ├── home.html
 │   │   ├── index.html
+│   │   ├── location_confirm_delete.html
+│   │   ├── location_form.html
+│   │   ├── location_list.html
 │   │   ├── characters_confirm_delete.html
 │   │   ├── characters_form.html
 │   │   └── characters_list.html
 │   ├── static/
-│   │   └── bootstrap/
-│   │       ├── css/
-│   │       │   └── bootstrap.min.css
-│   │       └── js/
-│   │           └── bootstrap.bundle.min.js
-│   ├── init.py
+│   │   ├── bootstrap/
+│   │   │   ├── css/
+│   │   │   │   └── bootstrap.min.css
+│   │   │   └── js/
+│   │   │       └── bootstrap.bundle.min.js
+│   │   └── images/
+│   │       ├── location_placeholder.jpg
+│   │       └── rick_and_morty_background.jpg
+│   ├── __init__.py
 │   ├── admin.py
 │   ├── apps.py
 │   ├── forms.py
@@ -155,9 +200,9 @@ wsBackend-Fabrica25.1/
 │   ├── tests.py
 │   ├── urls.py
 │   └── views.py
-├── rickandmortyapi/
-│   ├── pycache/
-│   ├── init.py
+├── rickandmortyapi
+│   ├── __pycache__/
+│   ├── __init__.py
 │   ├── asgi.py
 │   ├── settings.py
 │   ├── urls.py
@@ -171,16 +216,14 @@ wsBackend-Fabrica25.1/
 ├── README.md
 └── manage.py
 
-
 ## Dependências
-
--   Django
--   Requests
--   django-bootstrap5
--   psycopg2-binary
+Django
+Requests
+django-bootstrap5
+psycopg2-binary
+python-dotenv
 
 ## Contribuindo
-
 Contribuições são bem-vindas! Sinta-se à vontade para abrir issues ou enviar pull requests. Para relatar bugs ou solicitar novos recursos, por favor, abra uma issue no repositório.
 
 ## Agradecimentos

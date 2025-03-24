@@ -1,10 +1,10 @@
-version: "3.8"
+
 services:
   db:
     image: postgres:13
     environment:
       POSTGRES_USER: rickandmortyuser
-      POSTGRES_PASSWORD: 03db02ip
+      POSTGRES_PASSWORD: password123
       POSTGRES_DB: rickandmorty
     ports:
       - "5432:5432"
@@ -20,6 +20,10 @@ services:
     depends_on:
       - db
     environment:
-      DATABASE_URL: postgres://rickandmortyuser:03db02ip@db:5432/rickandmorty
+      DATABASE_URL: postgres://rickandmortyuser:password123@db:5432/rickandmorty
+    deploy:
+      resources:
+        limits:
+          memory: 1G # Limita a 1 Gigabyte de RAM
 volumes:
   postgres_data:

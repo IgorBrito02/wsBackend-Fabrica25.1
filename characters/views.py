@@ -18,28 +18,23 @@ def fetch_characters(request):
     try:
         response = requests.get(url)
         response.raise_for_status()
-        data = response.json()
+        try:
+            data = response.json()
+        except ValueError as e:
+            return JsonResponse({"error": f"Erro ao decodificar JSON: {str(e)}"}, status=500)
         characters = data.get("results", [])
-
         saved_count = 0
-        locations_count = {}  # Dicionário para contar residentes por localização 
-        
+        locations_count = {}
         for character in characters:
             location_data = character["location"]
             location_id = location_data["url"].split("/")[-1] if location_data["url"] else 0
-
-            # Contagem de residentes
             if location_id not in locations_count:
                 locations_count[location_id] = 0
             locations_count[location_id] += 1
-            
             location, created = Location.objects.update_or_create(
                 api_id=location_id,
-                defaults={
-                    "name": location_data["name"],
-                }
+                defaults={"name": location_data["name"]},
             )
-
             _, created = Character.objects.update_or_create(
                 api_id=character["id"],
                 defaults={
@@ -51,24 +46,24 @@ def fetch_characters(request):
                     "origin_name": character["origin"]["name"],
                     "location_name": character["location"]["name"],
                     "image": character["image"],
-                    "location": location
-                }
+                    "location": location,
+                },
             )
             if created:
                 saved_count += 1
-
-        # Atualiza o número de residentes nas localizações
         for location_id, count in locations_count.items():
             Location.objects.filter(api_id=location_id).update(residents_count=count)
-
         return JsonResponse({"message": f"{saved_count} personagens salvos com sucesso!"}, status=201)
-
     except requests.exceptions.RequestException as e:
         return JsonResponse({"error": f"Erro ao buscar dados: {str(e)}"}, status=500)
 
 def character_list(request):
-    characters = Character.objects.all()
-    return render(request, 'characters/character_list.html', {'characters': characters})
+    search_term = request.GET.get('search', '')
+    if search_term:
+        characters = Character.objects.filter(name__icontains=search_term)
+    else:
+        characters = Character.objects.all()
+    return render(request, 'characters/character_list.html', {'characters': characters, 'search_term': search_term})
 
 def character_create(request):
     form = CharacterForm(request.POST or None)
@@ -93,10 +88,14 @@ def character_delete(request, pk):
     return render(request, 'characters/character_confirm_delete.html', {'character': character})
 
 def location_list(request):
-    locations = Location.objects.all()
+    search_term = request.GET.get('search', '')
+    if search_term:
+        locations = Location.objects.filter(name__icontains=search_term)
+    else:
+        locations = Location.objects.all()
     for location in locations:
-        location.residents = location.characters.all()  # Adiciona os personagens à localização
-    return render(request, 'characters/location_list.html', {'locations': locations})
+        location.residents = location.characters.all()
+    return render(request, 'characters/location_list.html', {'locations': locations, 'search_term': search_term})
 
 def location_create(request):
     form = LocationForm(request.POST or None)

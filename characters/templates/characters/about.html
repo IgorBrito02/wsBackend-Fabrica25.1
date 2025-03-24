@@ -5,46 +5,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rick and Morty - Sobre</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" href="#">Rick and Morty</a>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'home' %}">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'about' %}">Sobre</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'character-list' %}">Personagens</a>
-                </li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
+                <li class="nav-item active"><a class="nav-link" href="{% url 'about' %}">Sobre</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'character-list' %}">Personagens</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'location-list' %}">Localizações</a></li>
             </ul>
         </div>
     </nav>
     <div class="container mt-5">
-        <h1>Sobre o Projeto Rick and Morty</h1>
-        <p>Este projeto foi desenvolvido para fornecer informações sobre o universo de Rick and Morty.</p>
+        <h1 class="mb-4">Sobre o Projeto Rick and Morty</h1>
+        <p class="lead">Este projeto é uma homenagem ao universo de Rick and Morty, oferecendo informações detalhadas sobre personagens e locais.</p>
         <div class="card mt-4">
             <div class="card-body">
                 <h5 class="card-title">Objetivo do Projeto</h5>
-                <p class="card-text">O objetivo é criar um sistema que permita aos fãs explorar e aprender mais sobre os personagens e o mundo de Rick and Morty.</p>
+                <p class="card-text">Criar uma plataforma interativa para fãs explorarem e aprenderem mais sobre o vasto universo de Rick and Morty.</p>
             </div>
         </div>
         <div class="card mt-4">
             <div class="card-body">
                 <h5 class="card-title">Tecnologias Utilizadas</h5>
-                <p class="card-text">O projeto utiliza Django e a API Rick and Morty para obter e exibir dados.</p>
+                <p class="card-text">O projeto utiliza Django para o backend e a API Rick and Morty para obter dados. O frontend é construído com Bootstrap para uma experiência de usuário responsiva e atraente.</p>
             </div>
         </div>
     </div>
-    <footer class="footer bg-light text-center py-3">
-        <p>© 2025 Rick and Morty</p>
+    <footer class="footer bg-light text-center py-3 mt-5">
+        <p>&copy; 2025 Rick and Morty</p>
     </footer>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
 </body>
 </html>

@@ -9,40 +9,52 @@
     <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
 </head>
 <body>
-    <div class="container mt-4">
-        <h1>Lista de Localizações</h1>
-        <a href="{% url 'location-create' %}" class="btn btn-success mb-3">Adicionar Nova Localização</a>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>ID da API</th>
-                    <th>Nome</th>
-                    <th>Número de Residentes</th>
-                    <th>Residentes</th>
-                    <th>Ações</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for location in locations %}
-                <tr>
-                    <td>{{ location.api_id }}</td>
-                    <td>{{ location.name }}</td>
-                    <td>{{ location.residents_count }}</td>
-                    <td>
-                        {% for resident in location.residents %}
-                            {{ resident.name }}{% if not forloop.last %}, {% endif %}
-                        {% empty %}
-                            Nenhum residente
-                        {% endfor %}
-                    </td>
-                    <td>
-                        <a href="{% url 'location-update' location.pk %}" class="btn btn-primary">Editar</a>
-                        <a href="{% url 'location-delete' location.pk %}" class="btn btn-danger">Excluir</a>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+    <div class="container mt-5">
+        <h1 class="mb-4">Lista de Localizações de Rick and Morty</h1>
+        <a href="{% url 'location-create' %}" class="btn btn-success btn-lg mb-3">Adicionar Nova Localização</a>
+
+        <form method="GET" class="mb-3">
+            <div class="input-group">
+                <input type="text" name="search" placeholder="Buscar por nome..." class="form-control" value="{{ search_term }}">
+                <button type="submit" class="btn btn-primary">Buscar</button>
+            </div>
+        </form>
+
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered">
+                <thead class="table-dark">
+                    <tr>
+                        <th>ID da API</th>
+                        <th>Nome</th>
+                        <th>Número de Residentes</th>
+                        <th>Residentes</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for location in locations %}
+                    <tr>
+                        <td>{{ location.api_id }}</td>
+                        <td>{{ location.name }}</td>
+                        <td>{{ location.residents_count }}</td>
+                        <td>
+                            {% if location.residents %}
+                                {% for resident in location.residents %}
+                                    {{ resident.name }}{% if not forloop.last %}, {% endif %}
+                                {% endfor %}
+                            {% else %}
+                                Nenhum residente
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a href="{% url 'location-update' location.pk %}" class="btn btn-primary btn-sm me-1">Editar</a>
+                            <a href="{% url 'location-delete' location.pk %}" class="btn btn-danger btn-sm">Excluir</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
     <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
 </body>
